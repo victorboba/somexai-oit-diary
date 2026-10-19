@@ -1,0 +1,98 @@
+name: OITDoseDiary
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: ""
+targets:
+  OITDoseDiary:
+    type: application
+    platform: iOS
+    sources:
+      - path: OITDoseDiary
+      - path: Shared
+    dependencies:
+      - target: OITDoseDiaryWidget
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.oit-diary
+        TARGETED_DEVICE_FAMILY: "1"
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        CODE_SIGN_ENTITLEMENTS: OITDoseDiary/OITDoseDiary.entitlements
+    info:
+      path: OITDoseDiary/Info.plist
+      properties:
+        CFBundleDisplayName: OIT Diary
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        ITSAppUsesNonExemptEncryption: false
+  OITDoseDiaryWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: OITDoseDiaryWidget
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.oit-diary.widget
+        TARGETED_DEVICE_FAMILY: "1"
+        CODE_SIGN_ENTITLEMENTS: OITDoseDiaryWidget/OITDoseDiaryWidget.entitlements
+        SKIP_INSTALL: YES
+    info:
+      path: OITDoseDiaryWidget/Info.plist
+      properties:
+        CFBundleDisplayName: OIT Diary Widget
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+  OITDoseDiaryTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: OITDoseDiaryTests
+    dependencies:
+      - target: OITDoseDiary
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.oit-diary.tests
+        GENERATE_INFOPLIST_FILE: YES
+  OITDoseDiaryUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: OITDoseDiaryUITests
+    dependencies:
+      - target: OITDoseDiary
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.oit-diary.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: OITDoseDiary
+schemes:
+  OITDoseDiary:
+    build:
+      targets:
+        OITDoseDiary: all
+        OITDoseDiaryTests: [test]
+        OITDoseDiaryUITests: [test]
+    run:
+      config: Debug
+      storeKitConfiguration: OITDoseDiary/StoreKit/Products.storekit
+    test:
+      config: Debug
+      storeKitConfiguration: OITDoseDiary/StoreKit/Products.storekit
+      targets:
+        - OITDoseDiaryTests
+        - OITDoseDiaryUITests
+    archive:
+      config: Release
